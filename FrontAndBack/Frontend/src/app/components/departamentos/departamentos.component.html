@@ -1,0 +1,144 @@
+<h1>Departamentos</h1>
+<div class="grid fluid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast position="bottom-right"></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <!-- <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedObrasSociales()" [disabled]="!selectedObrasSociales || !selectedObrasSociales.length"></button> -->
+                    </div>
+                </ng-template>
+
+                <!-- <ng-template pTemplate="center">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                    <p-splitButton label="Exportar" icon="pi pi-upload" styleClass="p-button-raised p-button-help mr-2 mb-2" (onClick)="exportExcel()" [model]="exportButtons"></p-splitButton>
+                </ng-template> -->
+            </p-toolbar>
+
+            <p-table #dt [value]="departamentos" [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['id', 'nombre', 'empresa', 'departamentoPadre']" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" dataKey="id" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [(selection)]="selectedDepartamentos" selectionMode="multiple" [rowHover]="true"  scrollHeight="400px">
+                <!-- [exportFilename]="exportFileName"  -->
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h2>Departamentos</h2>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                        <th pSortableColumn="empresa">Empresa<p-sortIcon field="empresa"></p-sortIcon></th>
+                        <th pSortableColumn="departamentoPadre">Departamento padre<p-sortIcon field="departamentoPadre"></p-sortIcon></th>
+                        <th>Acciones</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-departamento>
+                    <tr>
+                        <td style="width:3rem">
+                            <span class="p-column-title">#</span>
+                            {{departamento.id}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Nombre</span>
+                            {{departamento.nombre}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Empresa</span>
+                            {{departamento.empresa.nombre}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Departamento padre</span>
+                            {{departamento.departamentoPadre?.nombre}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editDepartamento(departamento)" title="Editar"></button>
+                                <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteObraSocial(obraSocial)" title="Borrar"></button> -->
+                                <!-- <button pButton pRipple icon="pi pi-folder-open" class="p-button-rounded p-button-info" (click)="mostrarPlanes()"></button> -->
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="departamentoDialog" [style]="{width: '450px'}" header="Detalle departamento" [modal]="true" class="p-fluid">
+            <form [formGroup]="formDepartamento">
+                <div class="field">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" pInputText id="nombre" formControlName="nombre" required
+                         [ngClass]="{ 'ng-invalid ng-dirty': (formDepartamento.controls['nombre'].touched || submitted) &&
+                  formDepartamento.controls['nombre'].errors
+                  }"/>
+                  <small class="ng-dirty ng-invalid" *ngIf="(formDepartamento.controls['nombre'].touched || submitted) &&
+                                  formDepartamento.controls['nombre'].hasError('required')">Ingrese un nombre.</small>
+                </div>
+                <div class="field">
+                    <label htmlFor="empresa">Empresa<span class="text-danger">*</span></label>
+                    <!-- <p-dropdown formControlName="empresa" optionValue="id" optionLabel="nombre" [options]="empresas" placeholder="Seleccione" [ngClass]="{
+                      'ng-invalid ng-dirty':
+                      (
+                        formDepartamento.controls['empresa'].touched ||
+                        submitted) &&
+                      formDepartamento.controls['empresa'].errors
+                    }"></p-dropdown> -->
+                    <p-dropdown formControlName="empresa" [options]="empresas" placeholder="Seleccione" optionLabel="nombre" [ngClass]="{
+                        'ng-invalid ng-dirty':
+                        (formDepartamento.controls['empresa'].touched || submitted) && formDepartamento.controls['empresa'].errors
+                      }">
+                        <ng-template let-empresa pTemplate="item">
+                          <span>{{ empresa.nombre }}</span>
+                        </ng-template>
+                      </p-dropdown>
+
+                    <small class="text-danger" *ngIf="(
+                      formDepartamento.controls['empresa'].touched ||
+                      submitted) &&
+                    formDepartamento.controls['empresa'].hasError('required')">Campo requerido.</small>
+                </div>
+                <div class="field">
+                    <label htmlFor="departamentoPadre">Departamento Padre</label>
+                    <p-dropdown formControlName="departamentoPadre" optionLabel="nombre" [options]="departamentos" placeholder="Seleccione" ></p-dropdown>
+                </div>
+
+    <!--          <ng-template pTemplate="footer">-->
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                        (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                        (click)="saveDepartamento()"></button>
+    <!--          </ng-template>-->
+            </form>
+          </p-dialog>
+
+
+        <!-- <p-dialog [(visible)]="deleteObraSocialDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="obraSocial">¿Confirmas la eliminación de la obra social <b>{{obraSocial.nombre}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObraSocialDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog> -->
+
+         <!-- <p-dialog [(visible)]="deleteObrasSocialesDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿Confirmas la eliminación de las obras sociales seleccionadas?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObrasSocialesDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog> -->
+    </div>
+</div>
+
+

@@ -1,0 +1,161 @@
+<h1>Informes</h1>
+<div class="grid fluid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast position="bottom-right"></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedInformes || !selectedInformes.length" ></button>
+                    </div>
+                </ng-template>
+                <!-- <ng-template pTemplate="center">
+                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
+                    <p-splitButton label="Exportar" icon="pi pi-upload" styleClass="p-button-raised p-button-help mr-2 mb-2" (onClick)="exportExcel()" [model]="exportButtons"></p-splitButton>
+                </ng-template> -->
+            </p-toolbar>
+            <p-table #dt [value]="informes" [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['nombre', 'empresaNombre', 'departamentoNombre']" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" dataKey="id" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [(selection)]="selectedInformes" selectionMode="multiple" [rowHover]="true"  scrollHeight="400px">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h2>Informes</h2>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                        <th pSortableColumn="empresaNombre">Empresa<p-sortIcon field="empresaNombre"></p-sortIcon></th>
+                        <th pSortableColumn="departamentoNombre">Departamento<p-sortIcon field="departamentoNombre"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-informe>
+                    <tr>
+                        <td style="min-width:10rem;">
+                          <p-tableCheckbox [value]="informe"></p-tableCheckbox>
+                        </td>
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Nombre</span>
+                            {{informe.nombre}}
+                        </td>
+                        <td>
+                          <span class="p-column-title" style="font-weight: bold;">Empresa</span>
+                            {{informe.empresaNombre}}
+                        </td>
+                        <td>
+                            <span class="p-column-title" style="font-weight: bold;">Departamento</span>
+                            {{informe.departamentoNombre}}
+                        </td>
+                        <td>
+                            <div class="flex" style="margin: auto; display: table; ">
+                                <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info mr-2" (click)="updateUrl(informe)" title="Visualizar"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editInforme(informe)" title="Editar"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteProduct(informe)" title="Borrar"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <p-dialog [(visible)]="informeDialog" [style]="{ width: '50vw'}" header="Detalle informe" [modal]="true" class="p-fluid">
+          <ng-template pTemplate="content">
+            <form [formGroup]="formInforme">
+              <div class="field">
+                <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  pInputText
+                  id="nombre"
+                  formControlName="nombre"
+                  required
+                  [ngClass]="{ 'ng-invalid ng-dirty': (formInforme.controls['nombre'].touched || submitted) &&
+                  formInforme.controls['nombre'].errors
+                  }"/>
+                <small
+                  class="text-danger"
+                  *ngIf="(formInforme.controls['nombre'].touched || submitted) && formInforme.controls['nombre'].hasError('required')">
+                  Ingrese un nombre.
+                </small>
+              </div>
+              <div class="formgrid grid">
+                <div class="field col">
+                  <label htmlFor="empresa">Empresa</label>
+                  <p-dropdown
+                    appendTo="body"
+                    formControlName="empresa"
+                    optionLabel="nombre"
+                    [options]="empresas"
+                    placeholder="Seleccione"
+                    showClear="true"
+                    (onChange)="filtrarDropBoxDepartamentos($event)" >
+                  </p-dropdown>
+                </div>
+                <div class="field col">
+                  <label htmlFor="departamento">Departamento</label>
+                  <p-dropdown
+                    formControlName="departamento"
+                    optionLabel="nombre"
+                    [options]="departamentosFiltrados"
+                    placeholder="Seleccione"
+                    showClear="true"
+                    >
+                  </p-dropdown>
+                </div>
+            </div>
+            <div class="field">
+              <label for="link">Link <span class="text-danger">*</span></label>
+              <textarea
+                id="link"
+                rows="5"
+                cols="30"
+                pInputTextarea
+                formControlName="link"
+                [ngClass]="{ 'ng-invalid ng-dirty': (formInforme.controls['link'].touched || submitted) &&
+                formInforme.controls['link'].errors
+                }">
+              </textarea>
+              <small
+                class="text-danger"
+                *ngIf="(formInforme.controls['link'].touched || submitted) && formInforme.controls['link'].hasError('required')">
+                Ingrese un link.
+              </small>
+            </div>
+            </form>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveInforme()"></button>
+          </ng-template>
+          </p-dialog>
+          <p-dialog [(visible)]="deleteInformeDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+              <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span *ngIf="informe">¿Confirmas la eliminación del informe <b>{{informe.nombre}}</b>?</span>
+              </div>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteInformeDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+              </ng-template>
+          </p-dialog>
+          <p-dialog [(visible)]="deleteInformesDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+              <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span>¿Confirmas la eliminación de los informes seleccionadas?</span>
+              </div>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteInformesDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+              </ng-template>
+          </p-dialog>
+    </div>
+</div>
+
+
