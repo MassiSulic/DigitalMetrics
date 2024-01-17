@@ -1,106 +1,91 @@
-<h1>Empresas</h1>
 <div class="grid">
-    <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toast position="bottom-right"></p-toast>
-            <p-toolbar styleClass="mb-4">
-                <ng-template pTemplate="left">
-                    <div class="my-2">
-                        <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                        <!-- <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedObrasSociales()" [disabled]="!selectedObrasSociales || !selectedObrasSociales.length"></button> -->
-                    </div>
-                </ng-template>
+   <div class="col-12">
+      <div class="card px-6 py-6">
+         <p-toast position="bottom-right"></p-toast>
 
-                <!-- <ng-template pTemplate="center">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
-                    <p-splitButton label="Exportar" icon="pi pi-upload" styleClass="p-button-raised p-button-help mr-2 mb-2" (onClick)="exportExcel()" [model]="exportButtons"></p-splitButton>
-                </ng-template> -->
-            </p-toolbar>
-
-            <p-table #dt [value]="empresas" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['id','nombre']" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" dataKey="id" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [(selection)]="selectedEmpresas" selectionMode="multiple" [rowHover]="true"  [scrollable]="true" scrollHeight="400px">
-                <!-- [exportFilename]="exportFileName"  -->
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h2>Empresas</h2>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-                        <th>Acciones</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-empresa>
-                    <tr>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">#</span>
-                            {{empresa.id}}
-                        </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Nombre</span>
-                            {{empresa.nombre}}
-                        </td>
-                        <td>
-                            <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmpresa(empresa)" title="Editar"></button>
-                                <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteObraSocial(obraSocial)" title="Borrar"></button> -->
-                                <!-- <button pButton pRipple icon="pi pi-folder-open" class="p-button-rounded p-button-info" (click)="mostrarPlanes()"></button> -->
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-
-        <p-dialog [(visible)]="empresaDialog" [style]="{width: '450px'}" header="Detalle empresa" [modal]="true" class="p-fluid">
-            <form [formGroup]="formEmpresa">
-                <div class="field">
-                  <label for="nombre">Nombre</label>
-                  <input type="text" pInputText id="nombre" formControlName="nombre" required
-                         [ngClass]="{ 'ng-invalid ng-dirty': (formEmpresa.controls['nombre'].touched || submitted) &&
-                  formEmpresa.controls['nombre'].errors
-                  }"/>
-                  <small class="ng-dirty ng-invalid" *ngIf="(formEmpresa.controls['nombre'].touched || submitted) &&
-                                  formEmpresa.controls['nombre'].hasError('required')">Ingrese un nombre.</small>
-                </div>    
-    <!--          <ng-template pTemplate="footer">-->
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-                        (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
-                        (click)="saveEmpresa()"></button>
-    <!--          </ng-template>-->
-            </form>
-          </p-dialog>
-    
-
-        <!-- <p-dialog [(visible)]="deleteObraSocialDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="obraSocial">¿Confirmas la eliminación de la obra social <b>{{obraSocial.nombre}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObraSocialDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+         <p-table #dt [value]="empresas" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['id', 'nombre']" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]" dataKey="id" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [(selection)]="selectedEmpresas" selectionMode="multiple" [rowHover]="true" [scrollable]="true" scrollHeight="400px">
+            <!-- [exportFilename]="exportFileName"  -->
+            <ng-template pTemplate="caption">
+               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center" style="margin-bottom: 40px">
+                  <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()" style="background-color: #00cc6d"></button>
+                  <span class="block mt-2 md:mt-0 p-input-icon-left">
+                     <i class="pi pi-search"></i>
+                     <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." class="w-full sm:w-auto" />
+                  </span>
+               </div>
             </ng-template>
-        </p-dialog> -->
-
-         <!-- <p-dialog [(visible)]="deleteObrasSocialesDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Confirmas la eliminación de las obras sociales seleccionadas?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObrasSocialesDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+            <ng-template pTemplate="header">
+               <tr>
+                  <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                  <th>Acciones</th>
+               </tr>
             </ng-template>
-        </p-dialog> -->
-    </div>
+            <ng-template pTemplate="body" let-empresa>
+               <tr>
+                  <td style="width: 14%; min-width: 10rem">
+                     <span class="p-column-title">#</span>
+                     {{ empresa.id }}
+                  </td>
+                  <td style="width: 14%; min-width: 10rem">
+                     <span class="p-column-title">Nombre</span>
+                     {{ empresa.nombre }}
+                  </td>
+                  <td>
+                     <div class="flex">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEmpresa(empresa)" title="Editar" style="background-color: #00cc6d"></button>
+                        <!-- <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteObraSocial(obraSocial)" title="Borrar"></button> -->
+                        <!-- <button pButton pRipple icon="pi pi-folder-open" class="p-button-rounded p-button-info" (click)="mostrarPlanes()"></button> -->
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </div>
+
+      <p-dialog [(visible)]="empresaDialog" [style]="{ width: '450px' }" header="Detalle empresa" [modal]="true" class="p-fluid">
+         <form [formGroup]="formEmpresa">
+            <div class="field">
+               <label for="nombre">Nombre</label>
+               <input
+                  type="text"
+                  pInputText
+                  id="nombre"
+                  formControlName="nombre"
+                  required
+                  [ngClass]="{
+                     'ng-invalid ng-dirty': (formEmpresa.controls['nombre'].touched || submitted) && formEmpresa.controls['nombre'].errors
+                  }"
+               />
+               <small class="ng-dirty ng-invalid" *ngIf="(formEmpresa.controls['nombre'].touched || submitted) && formEmpresa.controls['nombre'].hasError('required')">Ingrese un nombre.</small>
+            </div>
+            <!--          <ng-template pTemplate="footer">-->
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()" style="background-color: #f25c5c; color: #ffffff"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveEmpresa()" style="background-color: #00cc6d; color: #ffffff; margin-top: 12px"></button>
+            <!--          </ng-template>-->
+         </form>
+      </p-dialog>
+
+      <!-- <p-dialog [(visible)]="deleteObraSocialDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+              <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span *ngIf="obraSocial">¿Confirmas la eliminación de la obra social <b>{{obraSocial.nombre}}</b>?</span>
+              </div>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObraSocialDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+              </ng-template>
+          </p-dialog> -->
+
+      <!-- <p-dialog [(visible)]="deleteObrasSocialesDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+              <div class="flex align-items-center justify-content-center">
+                  <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                  <span>¿Confirmas la eliminación de las obras sociales seleccionadas?</span>
+              </div>
+              <ng-template pTemplate="footer">
+                  <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteObrasSocialesDialog = false"></button>
+                  <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+              </ng-template>
+          </p-dialog> -->
+   </div>
 </div>
-
-

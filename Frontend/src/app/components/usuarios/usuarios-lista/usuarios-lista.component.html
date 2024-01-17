@@ -1,95 +1,75 @@
-<h1>Usuarios</h1>
 <div class="grid fluid">
-    <div class="col-12">
-        <div class="card px-6 py-6">
-            <p-toast position="bottom-right"></p-toast>
-            <p-toolbar styleClass="mb-4">
-              <ng-template pTemplate="left">
-                <div class="my-2">
-                    <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-                    <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedUsuarios || !selectedUsuarios.length" ></button>
-                </div>
+   <div class="col-12">
+      <div class="card px-6 py-6">
+         <p-table #dt [value]="usuarios" [columns]="cols" responsiveLayout="stack" [rows]="10" [globalFilterFields]="['nombre', 'puesto', 'email', 'nombreUsuario', 'empresaNombre', 'departamentoNombre']" [paginator]="true" [rowsPerPageOptions]="[5, 10, 20]" dataKey="id" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [(selection)]="selectedUsuarios" selectionMode="multiple" [rowHover]="true" scrollHeight="400px">
+            <!-- [exportFilename]="exportFileName"  -->
+            <ng-template pTemplate="caption">
+               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center" style="margin-bottom: 40px">
+                  <div>
+                     <button pButton pRipple label="Agregar" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()" style="background-color: #00cc6d"></button>
+                     <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedUsuarios || !selectedUsuarios.length" style="background-color: #f25c5c"></button>
+                  </div>
+                  <span class="block mt-2 md:mt-0 p-input-icon-left">
+                     <i class="pi pi-search"></i>
+                     <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..." class="w-full sm:w-auto" />
+                  </span>
+               </div>
             </ng-template>
+            <ng-template pTemplate="header">
+               <tr>
+                  <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
+                  <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                  <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
+                  <th pSortableColumn="nombreUsuario">Usuario<p-sortIcon field="nombreUsuario"></p-sortIcon></th>
+                  <th pSortableColumn="empresaNombre">Empresa<p-sortIcon field="empresaNombre"></p-sortIcon></th>
+                  <th pSortableColumn="departamentoNombre">Departamento<p-sortIcon field="departamentoNombre"></p-sortIcon></th>
+                  <th pSortableColumn="puesto">Puesto<p-sortIcon field="puesto"></p-sortIcon></th>
+                  <th></th>
+               </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-usuario>
+               <tr>
+                  <td style="min-width: 10rem">
+                     <p-tableCheckbox [value]="usuario"></p-tableCheckbox>
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Nombre</span>
+                     {{ usuario.nombre }}
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Email</span>
+                     {{ usuario.email }}
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Usuario</span>
+                     {{ usuario.nombreUsuario }}
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Empresa</span>
+                     {{ usuario?.empresaNombre }}
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Departamento</span>
+                     {{ usuario?.departamentoNombre }}
+                  </td>
+                  <td>
+                     <span class="p-column-title" style="font-weight: bold">Puesto</span>
+                     {{ usuario?.puesto }}
+                  </td>
 
-                <!-- <ng-template pTemplate="center">
-                    <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
-                    <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help" (click)="dt.exportCSV()"></button>
-                    <p-splitButton label="Exportar" icon="pi pi-upload" styleClass="p-button-raised p-button-help mr-2 mb-2" (onClick)="exportExcel()" [model]="exportButtons"></p-splitButton>
-                </ng-template> -->
-            </p-toolbar>
+                  <td>
+                     <div class="flex" style="margin: auto; display: table">
+                        <button pButton pRipple icon="pi pi-unlock" class="p-button-rounded p-button-info mr-2" title="Permisos" [routerLink]="['/usuarios/permisos/' + usuario.id]" style="background-color: #00a4b7; color: #ffffff"></button>
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUsuario(usuario)" title="Editar" style="background-color: #00cc6d; color: #ffffff"></button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteProduct(usuario)" title="Borrar" style="background-color: #f25c5c; color: #ffffff"></button>
+                     </div>
+                  </td>
+               </tr>
+            </ng-template>
+         </p-table>
+      </div>
 
-            <p-table #dt [value]="usuarios" [columns]="cols" responsiveLayout="stack" [rows]="10"
-                [globalFilterFields]="['nombre', 'puesto', 'email', 'nombreUsuario', 'empresaNombre', 'departamentoNombre']" [paginator]="true"
-                [rowsPerPageOptions]="[5,10,20]" dataKey="id" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
-                [(selection)]="selectedUsuarios" selectionMode="multiple" [rowHover]="true"
-                scrollHeight="400px">
-                <!-- [exportFilename]="exportFileName"  -->
-                <ng-template pTemplate="caption">
-                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h2>Usuarios</h2>
-                        <span class="block mt-2 md:mt-0 p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
-                                class="w-full sm:w-auto" />
-                        </span>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th pSortableColumn="id"># <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-                        <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
-                        <th pSortableColumn="nombreUsuario">Usuario<p-sortIcon field="nombreUsuario"></p-sortIcon></th>
-                        <th pSortableColumn="empresaNombre">Empresa<p-sortIcon field="empresaNombre"></p-sortIcon></th>
-                        <th pSortableColumn="departamentoNombre">Departamento<p-sortIcon field="departamentoNombre"></p-sortIcon></th>
-                        <th pSortableColumn="puesto">Puesto<p-sortIcon field="puesto"></p-sortIcon></th>
-                        <th></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-usuario>
-                    <tr>
-                      <td style="min-width:10rem;">
-                        <p-tableCheckbox [value]="usuario"></p-tableCheckbox>
-                      </td>
-                      <td>
-                          <span class="p-column-title" style="font-weight: bold;">Nombre</span>
-                          {{usuario.nombre}}
-                      </td>
-                      <td>
-                        <span class="p-column-title" style="font-weight: bold;">Email</span>
-                        {{usuario.email}}
-                      </td>
-                      <td>
-                        <span class="p-column-title" style="font-weight: bold;">Usuario</span>
-                        {{usuario.nombreUsuario}}
-                      </td>
-                      <td>
-                        <span class="p-column-title" style="font-weight: bold;">Empresa</span>
-                          {{usuario?.empresaNombre}}
-                      </td>
-                      <td>
-                          <span class="p-column-title" style="font-weight: bold;">Departamento</span>
-                          {{usuario?.departamentoNombre}}
-                      </td>
-                      <td>
-                          <span class="p-column-title" style="font-weight: bold;">Puesto</span>
-                          {{usuario?.puesto}}
-                      </td>
-
-                      <td>
-                        <div class="flex" style="margin: auto; display: table; ">
-                          <button pButton pRipple icon="pi pi-unlock" class="p-button-rounded p-button-info mr-2" title="Permisos" [routerLink]="['/usuarios/permisos/' + usuario.id]"></button>
-                          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUsuario(usuario)" title="Editar"></button>
-                          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" (click)="deleteProduct(usuario)" title="Borrar"></button>
-                        </div>
-                      </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-
-        <!-- <p-dialog [style]="{width:'450px'}" [(visible)]="usuarioDialogEdit"  header="Detalle usuario" [modal]="true" class="p-fluid">
+      <!-- <p-dialog [style]="{width:'450px'}" [(visible)]="usuarioDialogEdit"  header="Detalle usuario" [modal]="true" class="p-fluid">
           <ng-template pTemplate="content">
             <form [formGroup]="formUsuario">
               <div class="field">
@@ -179,286 +159,227 @@
             <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveUsuario()"></button>
           </ng-template>
         </p-dialog> -->
-<!-- MODIFICAR UN USUARIO -->
-<p-dialog [(visible)]="usuarioDialogEdit"  showHeader="false" header="" [modal]="true" class="p-fluid">
-  <div class=" flex align-items-center justify-content-center">
-    <div class="flex flex-column align-items-center justify-content-center">
-        <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                <div class="text-center mb-2">
-                    <img src="../../../../assets/demo/images/login/user-avatar.png" alt="Image" height="50" class="mb-2">
-                    <div class="text-900 text-3xl font-medium mb-2">Modificar Usuario</div>
-                </div>
-                <form action="" [formGroup]="formUsuarioEdit">
-                  <div class="grid mt-2">
-                    <div class="field col-12 md:col-6">
-                      <label for="nombre" class="block text-900 text-xl font-medium mb-2">Nombre</label>
-                      <input
-                      class="w-full mb-2 mr-2" style="padding:1rem"
-                      placeholder="Nombre completo"
-                      type="text"
-                      pInputText id="nombre"
-                      formControlName="nombre"
-                      required
-                      [ngClass]="{ 'ng-invalid ng-dirty': (formUsuarioEdit.controls['nombre'].touched || submitted) && formUsuarioEdit.controls['nombre'].errors}"
-                    />
-                    <small
-                      class="ng-dirty ng-invalid"
-                      *ngIf="(formUsuarioEdit.controls['nombre'].touched || submitted) && formUsuarioEdit.controls['nombre'].hasError('required')">
-                      Ingrese un nombre.
-                    </small>
-                    </div>
-                    <div class="field col-12 md:col-6">
-                      <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
-                      <input
-                      class="w-full mb-2 mr-2" style="padding:1rem"
-                      placeholder="Direccion de correo"
-                      type="text"
-                      pInputText
-                      id="email"
-                      formControlName="email"
-                      required
-                      [ngClass]="{ 'ng-invalid ng-dirty': (formUsuarioEdit.controls['email'].touched || submitted) && formUsuarioEdit.controls['email'].errors}"
-                    />
-                    <small
-                      class="ng-dirty ng-invalid"
-                      *ngIf="(formUsuarioEdit.controls['email'].touched || submitted) && formUsuarioEdit.controls['email'].hasError('required')">
-                      Ingrese un email.
-                    </small>
-                    </div>
-                  </div>
-
-                  <div class="grid">
-                    <div class="field col-12 md:col-6">
-                      <label for="nombreUsuario" class="block text-900 text-xl font-medium mb-2">Nombre de Usuario</label>
-                      <input
-                      class="w-full mb-2" style="padding:1rem"
-                      placeholder="Usuario"
-                      type="text"
-                      pInputText
-                      id="nombreUsuario"
-                      formControlName="nombreUsuario"
-                      required
-                      [ngClass]="{ 'ng-invalid ng-dirty': (formUsuarioEdit.controls['nombreUsuario'].touched || submitted) && formUsuarioEdit.controls['nombreUsuario'].errors}"
-                      />
-                      <small
-                        class="ng-dirty ng-invalid"
-                        *ngIf="(formUsuarioEdit.controls['nombreUsuario'].touched || submitted) && formUsuarioEdit.controls['nombreUsuario'].hasError('required')">
-                        Ingrese un Nombre de Usuario.
-                      </small>
-                    </div>
-                  </div>
-                  <div class="grid">
-                    <div class="field col-12 md:col-6">
-                      <label htmlFor="empresa" class="block text-900 font-medium text-xl">Empresa</label>
-                      <p-dropdown
-                        styleClass="w-full mb-2"
-                        appendTo="body"
-                        formControlName="empresa"
-                        optionLabel="nombre"
-                        [options]="empresas"
-                        placeholder="Seleccione"
-                        showClear="true"
-                        [(ngModel)]="selectedEmpresa"
-                        (onChange)="filtrarDropBoxDepartamentos($event)" >
-                      </p-dropdown>
-                    </div>
-                    <div class="field col-12 md:col-6">
-                      <label htmlFor="departamento" class="block text-900 font-medium text-xl">Departamento</label>
-                      <p-dropdown
-                      styleClass="w-full mb-2"
-                        formControlName="departamentos"
-                        optionLabel="nombre"
-                        [options]="departamentosFiltrados"
-                        placeholder="Seleccione"
-                        showClear="true"
-                        [disabled]="dropDownDepartamentosDisabled"
-                        >
-                      </p-dropdown>
-                    </div>
-                  </div>
-                <div class="grid">
-                  <div class="field col-12 md:col-6">
-                    <label for="puesto" class="block text-900 text-xl font-medium mb-2">Puesto</label>
-                    <input
-                      class="w-full mb-2" style="padding:1rem"
-                      placeholder="Puesto"
-                      type="text"
-                      pInputText id="puesto"
-                      formControlName="puesto"
-                    />
-                  </div>
-                </div>
-              </form>
-                <div>
-                    <div class="flex align-items-center justify-content-between mb-2 gap-5">
-                        <div class="flex align-items-center">
-
-                        </div>
-                    </div>
-                    <button pButton pRipple label="Guardar" icon="pi pi-check" class="w-full p-3 text-xl" (click)="editarUsuario()"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</p-dialog>
-
-<!-- CREAR UN USUARIO -->
-        <p-dialog [(visible)]="usuarioDialog"  showHeader="false" header="" [modal]="true" class="p-fluid">
-          <div class=" flex align-items-center justify-content-center">
+      <!-- MODIFICAR UN USUARIO -->
+      <p-dialog [(visible)]="usuarioDialogEdit" showHeader="false" header="" [modal]="true" class="p-fluid">
+         <div class="flex align-items-center justify-content-center">
             <div class="flex flex-column align-items-center justify-content-center">
-                <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-                    <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
-                        <div class="text-center mb-2">
-                            <!-- <img src="../../../../assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
-                            <img src="../../../../assets/demo/images/login/user-avatar.png" alt="Image" height="50" class="mb-2">
-                            <div class="text-900 text-3xl font-medium mb-2">Nuevo Usuario</div>
-                            <!-- <span class="text-600 font-medium">Sign in to continue</span> -->
-                        </div>
-                        <form action="" [formGroup]="formUsuario">
-                          <div class="grid mt-2">
-                            <div class="field col-12 md:col-6">
+               <div>
+                  <div class="w-full surface-card px-5">
+                     <div class="text-center mb-2">
+                        <div class="text-900 text-3xl font-medium">Modificar Usuario</div>
+                     </div>
+                     <form action="" [formGroup]="formUsuarioEdit" style="margin-top: 34px">
+                        <div class="grid mt-2">
+                           <div class="field col-12 md:col-6">
                               <label for="nombre" class="block text-900 text-xl font-medium mb-2">Nombre</label>
                               <input
-                              class="w-full mb-2 mr-2" style="padding:1rem"
-                              placeholder="Nombre completo"
-                              type="text"
-                              pInputText id="nombre"
-                              formControlName="nombre"
-                              required
-                              [ngClass]="{ 'ng-invalid ng-dirty': (formUsuario.controls['nombre'].touched || submitted) && formUsuario.controls['nombre'].errors}"
-                            />
-                            <small
-                              class="ng-dirty ng-invalid"
-                              *ngIf="(formUsuario.controls['nombre'].touched || submitted) && formUsuario.controls['nombre'].hasError('required')">
-                              Ingrese un nombre.
-                            </small>
-                            </div>
-                            <div class="field col-12 md:col-6">
+                                 class="w-full mb-2 mr-2"
+                                 style="padding: 1rem"
+                                 placeholder="Nombre completo"
+                                 type="text"
+                                 pInputText
+                                 id="nombre"
+                                 formControlName="nombre"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuarioEdit.controls['nombre'].touched || submitted) && formUsuarioEdit.controls['nombre'].errors
+                                 }"
+                              />
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuarioEdit.controls['nombre'].touched || submitted) && formUsuarioEdit.controls['nombre'].hasError('required')"> Ingrese un nombre. </small>
+                           </div>
+                           <div class="field col-12 md:col-6">
                               <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
                               <input
-                              class="w-full mb-2 mr-2" style="padding:1rem"
-                              placeholder="Direccion de correo"
-                              type="text"
-                              pInputText
-                              id="email"
-                              formControlName="email"
-                              required
-                              [ngClass]="{ 'ng-invalid ng-dirty': (formUsuario.controls['email'].touched || submitted) && formUsuario.controls['email'].errors}"
-                            />
-                            <small
-                              class="ng-dirty ng-invalid"
-                              *ngIf="(formUsuario.controls['email'].touched || submitted) && formUsuario.controls['email'].hasError('required')">
-                              Ingrese un email.
-                            </small>
-                            </div>
-                          </div>
+                                 class="w-full mb-2 mr-2"
+                                 style="padding: 1rem"
+                                 placeholder="Direccion de correo"
+                                 type="text"
+                                 pInputText
+                                 id="email"
+                                 formControlName="email"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuarioEdit.controls['email'].touched || submitted) && formUsuarioEdit.controls['email'].errors
+                                 }"
+                              />
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuarioEdit.controls['email'].touched || submitted) && formUsuarioEdit.controls['email'].hasError('required')"> Ingrese un email. </small>
+                           </div>
+                        </div>
 
-                          <div class="grid">
-                            <div class="field col-12 md:col-6 ">
+                        <div class="grid">
+                           <div class="field col-12 md:col-6">
                               <label for="nombreUsuario" class="block text-900 text-xl font-medium mb-2">Nombre de Usuario</label>
                               <input
-                              class="w-full  mb-2" style="padding:1rem"
-                              placeholder="Usuario"
-                              type="text"
-                              pInputText
-                              id="nombreUsuario"
-                              formControlName="nombreUsuario"
-                              required
-                              [ngClass]="{ 'ng-invalid ng-dirty': (formUsuario.controls['nombreUsuario'].touched || submitted) && formUsuario.controls['nombreUsuario'].errors}"
+                                 class="w-full mb-2"
+                                 style="padding: 1rem"
+                                 placeholder="Usuario"
+                                 type="text"
+                                 pInputText
+                                 id="nombreUsuario"
+                                 formControlName="nombreUsuario"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuarioEdit.controls['nombreUsuario'].touched || submitted) && formUsuarioEdit.controls['nombreUsuario'].errors
+                                 }"
                               />
-                              <small
-                                class="ng-dirty ng-invalid"
-                                *ngIf="(formUsuario.controls['nombreUsuario'].touched || submitted) && formUsuario.controls['nombreUsuario'].hasError('required')">
-                                Ingrese un Nombre de Usuario.
-                              </small>
-                            </div>
-                            <div class="field col-12 md:col-6">
-                              <label for="password" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
-                              <p-password id="password" formControlName="password" placeholder="Password" [toggleMask]="true" styleClass="mb-2" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
-                              <small
-                                class="ng-dirty ng-invalid"
-                                *ngIf="(formUsuario.controls['password'].touched || submitted) && formUsuario.controls['password'].hasError('required')">
-                                Ingrese una Contraseña.
-                              </small>
-                            </div>
-                          </div>
-                          <div class="grid">
-                            <div class="field col-12 md:col-6 ">
-                              <label htmlFor="empresa" class="block text-900 font-medium text-xl">Empresa</label>
-                              <p-dropdown
-                                styleClass="w-full  mb-2"
-                                appendTo="body"
-                                formControlName="empresa"
-                                optionLabel="nombre"
-                                [options]="empresas"
-                                placeholder="Seleccione"
-                                showClear="true"
-                                (onChange)="filtrarDropBoxDepartamentos($event)" >
-                              </p-dropdown>
-                            </div>
-                            <div class="field col-12 md:col-6 ">
-                              <label htmlFor="departamento" class="block text-900 font-medium text-xl">Departamento</label>
-                              <p-dropdown
-                                styleClass="w-full  mb-2"
-                                formControlName="departamentos"
-                                optionLabel="nombre"
-                                [options]="departamentosFiltrados"
-                                placeholder="Seleccione"
-                                showClear="true"
-                                >
-                              </p-dropdown>
-                            </div>
-                          </div>
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuarioEdit.controls['nombreUsuario'].touched || submitted) && formUsuarioEdit.controls['nombreUsuario'].hasError('required')"> Ingrese un Nombre de Usuario. </small>
+                           </div>
+                        </div>
                         <div class="grid">
-                          <div class="field col-12 md:col-6 ">
-                            <label for="puesto" class="block text-900 text-xl font-medium mb-2">Puesto</label>
-                            <input
-                              class="w-full  mb-2" style="padding:1rem"
-                              placeholder="Puesto"
-                              type="text"
-                              pInputText id="puesto"
-                              formControlName="puesto"
-                            />
-                          </div>
+                           <div class="field col-12 md:col-6">
+                              <label htmlFor="empresa" class="block text-900 font-medium text-xl">Empresa</label>
+                              <p-dropdown styleClass="w-full mb-2" appendTo="body" formControlName="empresa" optionLabel="nombre" [options]="empresas" placeholder="Seleccione" showClear="true" [(ngModel)]="selectedEmpresa" (onChange)="filtrarDropBoxDepartamentos($event)"> </p-dropdown>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                              <label htmlFor="departamento" class="block text-900 font-medium text-xl">Departamento</label>
+                              <p-dropdown styleClass="w-full mb-2" formControlName="departamentos" optionLabel="nombre" [options]="departamentosFiltrados" placeholder="Seleccione" showClear="true" [disabled]="dropDownDepartamentosDisabled"> </p-dropdown>
+                           </div>
                         </div>
-                      </form>
-                        <div>
-                            <div class="flex align-items-center justify-content-between mb-2 gap-5">
-                                <div class="flex align-items-center">
-
-                                </div>
-                            </div>
-                            <button pButton pRipple label="Registrar" class="w-full p-3 text-xl" (click)="saveUsuario()"></button>
+                        <div class="grid">
+                           <div class="field col-12 md:col-6">
+                              <label for="puesto" class="block text-900 text-xl font-medium mb-2">Puesto</label>
+                              <input class="w-full mb-2" style="padding: 1rem" placeholder="Puesto" type="text" pInputText id="puesto" formControlName="puesto" />
+                           </div>
                         </div>
-                    </div>
-                </div>
+                     </form>
+                     <div>
+                        <div class="flex align-items-center justify-content-between mb-2 gap-5">
+                           <div class="flex align-items-center"></div>
+                        </div>
+                        <button pButton pRipple label="Guardar" icon="pi pi-check" class="w-full p-3 text-xl" (click)="editarUsuario()" class="BotonGuardarEditarUsuario"></button>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
+         </div>
       </p-dialog>
 
+      <!-- CREAR UN USUARIO -->
+      <p-dialog [(visible)]="usuarioDialog" showHeader="false" header="" [modal]="true" class="p-fluid">
+         <div class="flex align-items-center justify-content-center">
+            <div class="flex flex-column align-items-center justify-content-center">
+               <div>
+                  <div class="w-full surface-card px-5 sm:px-8">
+                     <div class="text-center mb-2">
+                        <!-- <img src="../../../../assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3"> -->
 
-        <p-dialog [(visible)]="deleteUsuarioDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="usuario">¿Confirmas la eliminación del usuario <b>{{usuario.nombreUsuario}}</b>?</span>
-            </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuarioDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
-            </ng-template>
-        </p-dialog>
+                        <div class="text-900 text-3xl font-medium">Nuevo Usuario</div>
+                        <!-- <span class="text-600 font-medium">Sign in to continue</span> -->
+                     </div>
+                     <form action="" [formGroup]="formUsuario" style="margin-top: 34px">
+                        <div class="grid mt-2">
+                           <div class="field col-12 md:col-6">
+                              <label for="nombre" class="block text-900 text-xl font-medium mb-2">Nombre</label>
+                              <input
+                                 class="w-full mb-2 mr-2"
+                                 style="padding: 1rem"
+                                 placeholder="Nombre completo"
+                                 type="text"
+                                 pInputText
+                                 id="nombre"
+                                 formControlName="nombre"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuario.controls['nombre'].touched || submitted) && formUsuario.controls['nombre'].errors
+                                 }"
+                              />
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuario.controls['nombre'].touched || submitted) && formUsuario.controls['nombre'].hasError('required')"> Ingrese un nombre. </small>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                              <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+                              <input
+                                 class="w-full mb-2 mr-2"
+                                 style="padding: 1rem"
+                                 placeholder="Direccion de correo"
+                                 type="text"
+                                 pInputText
+                                 id="email"
+                                 formControlName="email"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuario.controls['email'].touched || submitted) && formUsuario.controls['email'].errors
+                                 }"
+                              />
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuario.controls['email'].touched || submitted) && formUsuario.controls['email'].hasError('required')"> Ingrese un email. </small>
+                           </div>
+                        </div>
 
-        <p-dialog [(visible)]="deleteUsuariosDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
-            <div class="flex align-items-center justify-content-center">
-                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>¿Confirmas la eliminación de los usuarios seleccionados?</span>
+                        <div class="grid">
+                           <div class="field col-12 md:col-6">
+                              <label for="nombreUsuario" class="block text-900 text-xl font-medium mb-2">Nombre de Usuario</label>
+                              <input
+                                 class="w-full mb-2"
+                                 style="padding: 1rem"
+                                 placeholder="Usuario"
+                                 type="text"
+                                 pInputText
+                                 id="nombreUsuario"
+                                 formControlName="nombreUsuario"
+                                 required
+                                 [ngClass]="{
+                                    'ng-invalid ng-dirty': (formUsuario.controls['nombreUsuario'].touched || submitted) && formUsuario.controls['nombreUsuario'].errors
+                                 }"
+                              />
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuario.controls['nombreUsuario'].touched || submitted) && formUsuario.controls['nombreUsuario'].hasError('required')"> Ingrese un Nombre de Usuario. </small>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                              <label for="password" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                              <p-password id="password" formControlName="password" placeholder="Password" [toggleMask]="true" styleClass="mb-2" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+                              <small class="ng-dirty ng-invalid" *ngIf="(formUsuario.controls['password'].touched || submitted) && formUsuario.controls['password'].hasError('required')"> Ingrese una Contraseña. </small>
+                           </div>
+                        </div>
+                        <div class="grid">
+                           <div class="field col-12 md:col-6">
+                              <label htmlFor="empresa" class="block text-900 font-medium text-xl">Empresa</label>
+                              <p-dropdown styleClass="w-full  mb-2" appendTo="body" formControlName="empresa" optionLabel="nombre" [options]="empresas" placeholder="Seleccione" showClear="true" (onChange)="filtrarDropBoxDepartamentos($event)"> </p-dropdown>
+                           </div>
+                           <div class="field col-12 md:col-6">
+                              <label htmlFor="departamento" class="block text-900 font-medium text-xl">Departamento</label>
+                              <p-dropdown styleClass="w-full  mb-2" formControlName="departamentos" optionLabel="nombre" [options]="departamentosFiltrados" placeholder="Seleccione" showClear="true"> </p-dropdown>
+                           </div>
+                        </div>
+                        <div class="grid">
+                           <div class="field col-12 md:col-6">
+                              <label for="puesto" class="block text-900 text-xl font-medium mb-2">Puesto</label>
+                              <input class="w-full mb-2" style="padding: 1rem" placeholder="Puesto" type="text" pInputText id="puesto" formControlName="puesto" />
+                           </div>
+                        </div>
+                     </form>
+                     <div>
+                        <div class="flex align-items-center justify-content-between mb-2 gap-5">
+                           <div class="flex align-items-center"></div>
+                        </div>
+                        <button pButton pRipple label="Registrar" class="w-full p-3 text-xl" (click)="saveUsuario()"></button>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuariosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
-            </ng-template>
-        </p-dialog>
-    </div>
+         </div>
+      </p-dialog>
+
+      <p-dialog [(visible)]="deleteUsuarioDialog" header="Confirmar" [modal]="true" [style]="{ width: '450px' }">
+         <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span *ngIf="usuario"
+               >¿Confirmas la eliminación del usuario <b>{{ usuario.nombreUsuario }}</b
+               >?</span
+            >
+         </div>
+         <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuarioDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+         </ng-template>
+      </p-dialog>
+
+      <p-dialog [(visible)]="deleteUsuariosDialog" header="Confirmar" [modal]="true" [style]="{ width: '450px' }">
+         <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>¿Confirmas la eliminación de los usuarios seleccionados?</span>
+         </div>
+         <ng-template pTemplate="footer">
+            <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuariosDialog = false"></button>
+            <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+         </ng-template>
+      </p-dialog>
+   </div>
 </div>

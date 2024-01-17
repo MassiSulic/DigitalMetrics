@@ -1,38 +1,35 @@
 <div class="card">
-  <p-toast position="bottom-right"></p-toast>
-  <div class="flex justify-content-center">
-    <h2>Control de Acceso a Informes</h2>
-  </div>
-  <div class="flex justify-content-center">
-    <h3>
-      <span class="font-bold text-900">Usuario:</span>
-       <span class="user-info">{{usuario?.nombreUsuario}}</span>
-    </h3>
-  </div>
-  <p-pickList [source]="sourceProducts" [target]="targetProducts" sourceHeader="Informes No Autorizados" targetHeader="Informes Autorizados" [dragdrop]="true" [responsive]="true" [sourceStyle]="{ height: '30rem' }"
-      [targetStyle]="{ height: '30rem' }" filterBy="nombre,empresaNombre,departamentoNombre" sourceFilterPlaceholder="Buscar por nombre, empresa o departamento" targetFilterPlaceholder="Buscar por nombre, empresa o departamento" breakpoint="1400px">
+   <p-toast position="bottom-right"></p-toast>
+   <div class="flex justify-content-center">
+      <h2>Control de Acceso a Informes</h2>
+   </div>
+   <div class="flex justify-content-center">
+      <h3>
+         <span class="font-bold text-900">Usuario:</span>
+         <span class="user-info">{{ usuario?.nombreUsuario }}</span>
+      </h3>
+   </div>
+   <p-pickList [source]="sourceProducts" [target]="targetProducts" sourceHeader="Informes No Autorizados" targetHeader="Informes Autorizados" [dragdrop]="true" [responsive]="true" [sourceStyle]="{ height: '30rem' }" [targetStyle]="{ height: '30rem' }" filterBy="nombre,empresaNombre,departamentoNombre" sourceFilterPlaceholder="Buscar por nombre, empresa o departamento" targetFilterPlaceholder="Buscar por nombre, empresa o departamento" breakpoint="1400px">
       <ng-template let-product pTemplate="item">
-          <div class="flex flex-wrap p-2 align-items-center gap-3">
-              <!-- <img class="w-4rem shadow-2 flex-shrink-0 border-round" src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" alt="{item.name}" /> -->
-              <div class="flex-1 flex flex-column gap-2">
-                  <span class="font-bold">{{ product.nombre }}</span>
-                  <div class="flex align-products-center gap-2">
-                  </div>
-                  <div class="flex align-products-center gap-2">
-                </div>
-              </div>
-              <div *ngIf="product.empresaNombre">
-                <span class="font-bold text-900"><i class="pi pi-bookmark-fill text-sm"></i>{{ product.empresaNombre }}</span>
-              </div>
-              <div *ngIf="product.departamentoNombre">
-                <span><i class="pi pi-tag text-sm"></i>{{product.departamentoNombre }}</span>
-              </div>
-          </div>
+         <div class="flex flex-wrap p-2 align-items-center gap-3">
+            <!-- <img class="w-4rem shadow-2 flex-shrink-0 border-round" src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" alt="{item.name}" /> -->
+            <div class="flex-1 flex flex-column gap-2">
+               <span class="font-bold">{{ product.nombre }}</span>
+               <div class="flex align-products-center gap-2"></div>
+               <div class="flex align-products-center gap-2"></div>
+            </div>
+            <div *ngIf="product.empresaNombre">
+               <span class="font-bold text-900"><i class="pi pi-bookmark-fill text-sm"></i>{{ product.empresaNombre }}</span>
+            </div>
+            <div *ngIf="product.departamentoNombre">
+               <span><i class="pi pi-tag text-sm"></i>{{ product.departamentoNombre }}</span>
+            </div>
+         </div>
       </ng-template>
-  </p-pickList>
-  <br>
-  <div class="flex justify-content-center">
-    <p-button label="Volver" icon="pi pi-replay" class="mr-2" styleClass="p-button-raised p-button-warning" [routerLink]="['/usuarios/lista/']"></p-button>
-    <p-button label="Grabar" icon="pi pi-save" styleClass="p-button-raised p-button-success" (click)="actualizarInformes()"></p-button>
-  </div>
+   </p-pickList>
+   <br />
+   <div class="flex justify-content-center">
+      <p-button label="Volver" icon="pi pi-replay" class="mr-2" styleClass="p-button-raised p-button-warning" [routerLink]="['/usuarios/lista/']"></p-button>
+      <p-button label="Grabar" icon="pi pi-save" styleClass="p-button-raised p-button-success" (click)="actualizarInformes()"></p-button>
+   </div>
 </div>

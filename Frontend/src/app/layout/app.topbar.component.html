@@ -1,27 +1,28 @@
-<div class="layout-topbar">
-    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+<div class="layout-topbar" style="padding: 0px !important">
+   <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()" style="margin-right: 50px">
       <i class="pi pi-bars"></i>
-    </button>
-    <a class="layout-topbar-logo" routerLink="">
-        <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'marca-inusual-cut-dark' : 'marca-inusual-cut-white'}}.png" alt="logo">
-        <!-- <span>INUSUAL</span> -->
-    </a>
-    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
-        <i class="pi pi-ellipsis-v"></i>
-    </button>
+   </button>
+   <a class="layout-topbar-logo" routerLink="">
+      <img src="../../assets/layout/images/DigitalMetricsGreen.png" alt="" />
+   </a>
+   <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+      <i class="pi pi-ellipsis-v"></i>
+   </button>
 
-    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <!-- <button class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendario</span>
-        </button> -->
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Mi perfil</span>
-        </button>
-        <button class="p-link layout-topbar-button" (click)="cerrarSesion()">
-            <i class="pi pi-sign-out"></i>
-            <span>Cerrar Sesión</span>
-        </button>
-    </div>
+   <div
+      #topbarmenu
+      class="layout-topbar-menu"
+      [ngClass]="{
+         'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible
+      }"
+   >
+      <button class="p-link layout-topbar-button">
+         <i class="pi pi-user"></i>
+         <span>Mi perfil</span>
+      </button>
+      <button class="p-link layout-topbar-button" (click)="cerrarSesion()">
+         <i class="pi pi-sign-out"></i>
+         <span>Cerrar Sesión</span>
+      </button>
+   </div>
 </div>
