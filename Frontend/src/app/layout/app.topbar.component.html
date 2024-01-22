@@ -1,10 +1,21 @@
+<style>
+   .img-container {
+      width: 100%;
+      text-align: center;
+   }
+
+   img {
+      width: 250px !important;
+   }
+</style>
+
 <div class="layout-topbar" style="padding: 0px !important">
    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()" style="margin-right: 50px">
       <i class="pi pi-bars"></i>
    </button>
-   <a class="layout-topbar-logo" routerLink="">
-      <img src="../../assets/layout/images/DigitalMetricsGreen.png" alt="" />
-   </a>
+   <div class="img-container">
+      <img src="../../assets/layout/images/Isologotipo Degradado Hotizontal (4) (1).png" alt="" />
+   </div>
    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
       <i class="pi pi-ellipsis-v"></i>
    </button>
