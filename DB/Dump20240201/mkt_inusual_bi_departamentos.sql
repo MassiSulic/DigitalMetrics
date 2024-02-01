@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 127.0.0.1    Database: mkt_inusual_bi
+-- Host: 216.246.46.146    Database: mkt_inusual_bi
 -- ------------------------------------------------------
--- Server version	8.1.0
+-- Server version	5.5.5-10.6.16-MariaDB-cll-lve
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,35 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `usuarios`
+-- Table structure for table `departamentos`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
+DROP TABLE IF EXISTS `departamentos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) DEFAULT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `puesto` varchar(255) DEFAULT NULL,
-  `token_password` varchar(255) DEFAULT NULL,
-  `empresa_id` int DEFAULT NULL,
+CREATE TABLE `departamentos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  `departamento_padre_id` int(11) DEFAULT NULL,
+  `empresa_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK9v93lqnass5yqhhsyprr9fdv2` (`empresa_id`),
-  CONSTRAINT `FK9v93lqnass5yqhhsyprr9fdv2` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+  KEY `FK3rvc3v35a3775khhaol2qtmea` (`departamento_padre_id`),
+  KEY `FK6btn4jnukl63uatv2cthktmhq` (`empresa_id`),
+  CONSTRAINT `FK3rvc3v35a3775khhaol2qtmea` FOREIGN KEY (`departamento_padre_id`) REFERENCES `departamentos` (`id`),
+  CONSTRAINT `FK6btn4jnukl63uatv2cthktmhq` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuarios`
+-- Dumping data for table `departamentos`
 --
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (5,'Patxi Fernadez','patxi.fz','patxifz@inusual.com.ar','$2a$10$1NVo4LKW0VJbCfZxfKS/JOPZ2OsQBvRpB2lYou75wKKGxvfgQzJke','CEO',NULL,1),(26,'Franco','franki','fortiz@inusual.com.ar','$2a$10$Uffw7/Na0bEf5z17h59y5.3thG4NKC.iJXyuKJOiD60QaKgZmVSm6','CEO',NULL,1),(31,'Massimo Sulic','massi','msulic@inusual.com.ar','$2a$10$bCG5EJM0YXB3rmjvZJP4x.mlh2pY9CpigQXQhbbIL7PtHeLA4HFPq','Web Developer',NULL,1);
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+LOCK TABLES `departamentos` WRITE;
+/*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-16 11:06:43
+-- Dump completed on 2024-02-01 11:02:51

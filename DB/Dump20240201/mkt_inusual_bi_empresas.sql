@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
--- Host: 127.0.0.1    Database: mkt_inusual_bi
+-- Host: 216.246.46.146    Database: mkt_inusual_bi
 -- ------------------------------------------------------
--- Server version	8.1.0
+-- Server version	5.5.5-10.6.16-MariaDB-cll-lve
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,29 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `departamentos_usuario`
+-- Table structure for table `empresas`
 --
 
-DROP TABLE IF EXISTS `departamentos_usuario`;
+DROP TABLE IF EXISTS `empresas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `departamentos_usuario` (
-  `departamento_id` int NOT NULL,
-  `usuario_id` int NOT NULL,
-  PRIMARY KEY (`departamento_id`,`usuario_id`),
-  KEY `FKmvg5bejgccile6yde985ajsn2` (`usuario_id`),
-  CONSTRAINT `FKdy6avo0j22qjrn2155f3qj5il` FOREIGN KEY (`departamento_id`) REFERENCES `usuarios` (`id`),
-  CONSTRAINT `FKmvg5bejgccile6yde985ajsn2` FOREIGN KEY (`usuario_id`) REFERENCES `departamentos` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `empresas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `departamentos_usuario`
+-- Dumping data for table `empresas`
 --
 
-LOCK TABLES `departamentos_usuario` WRITE;
-/*!40000 ALTER TABLE `departamentos_usuario` DISABLE KEYS */;
-/*!40000 ALTER TABLE `departamentos_usuario` ENABLE KEYS */;
+LOCK TABLES `empresas` WRITE;
+/*!40000 ALTER TABLE `empresas` DISABLE KEYS */;
+INSERT INTO `empresas` VALUES (1,'Inusual'),(3,'Grupo Jalil'),(4,'Grupo AGNAUM'),(5,'Loop'),(6,'Gomez Roco'),(7,'Nissan Fiani'),(8,'Antoo'),(9,'Gerencia'),(10,'Grupo Empresas'),(11,'Sanatorio Pasteur'),(12,'Renault Jalil'),(13,'Nissan AGNOA'),(14,'Ford AGNAUM'),(15,'Spaniard Performance'),(16,'Vitruve'),(17,'Las Juanas'),(18,'Elemnor'),(19,'Credipana');
+/*!40000 ALTER TABLE `empresas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-16 11:06:43
+-- Dump completed on 2024-02-01 11:02:37
