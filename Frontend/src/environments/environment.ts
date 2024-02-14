@@ -4,7 +4,7 @@
 
 export const environment = {
    production: false,
-   apiBaseUrl: 'http://api.digitalmetrics.com.ar/',
+   apiBaseUrl: 'https://api.digitalmetrics.com.ar/',
 };
 
 /*
