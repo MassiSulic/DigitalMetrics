@@ -1,10 +1,9 @@
 <style>
    .container {
-      background-color: rgba(255, 255, 255, 0.022);
+      background-color: rgb(255, 255, 255);
       padding: 20px;
       border-radius: 10px;
-      backdrop-filter: blur(1px); /* Ajusta la cantidad de desenfoque */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra para resaltar el efecto */
+      border: 1px solid rgba(0, 0, 0, 0.12);
       height: auto;
       padding: 48px;
       width: 100%;
@@ -14,30 +13,27 @@
 
 <div class="container">
    <div class="principal">
-      <p-card style="border-radius: 12px" header="Análisis inteligente para el éxito" subheader="Toma decisiones informadas y optimiza tus estrategias">
+      <p-card style="border-radius: 12px">
          <ng-template pTemplate="header">
             <img style="border-top-left-radius: 5px; border-top-right-radius: 5px" alt="Card" src="..\..\assets\layout\images\06 Banners_Mesa de trabajo 1 copia 10.png" />
          </ng-template>
-         <p style="text-align: justify">Combinamos el análisis de marketing y el business inteligence para impulsar tu empresa. Obtén información valiosa, visualiza tus datos y toma decisiones informadas para optimizar estrategias poderosas. Maximiza el potencial de tu negocio y alcanza el éxito empresarial.</p>
       </p-card>
    </div>
 
    <div class="row">
-      <div class="col-md-6">
-         <p-card header="Análisis inteligente para el éxito" subheader="Toma decisiones informadas y optimiza tus estrategias">
+      <div class="col-md-6 principal">
+         <p-card>
             <ng-template pTemplate="header">
                <img style="border-top-left-radius: 5px; border-top-right-radius: 5px" alt="Card" src="..\..\assets\layout\images\06 Banners_Mesa de trabajo 1 copia 5.png" />
             </ng-template>
-            <p style="text-align: justify">Combinamos el análisis de marketing y el business inteligence para impulsar tu empresa. Obtén información valiosa, visualiza tus datos y toma decisiones informadas para optimizar estrategias poderosas. Maximiza el potencial de tu negocio y alcanza el éxito empresarial.</p>
          </p-card>
       </div>
 
-      <div class="col-md-6">
-         <p-card header="Integraciones poderosas" subheader="Conecta y potencia tus herramientas favoritas">
+      <div class="col-md-6 principal">
+         <p-card>
             <ng-template pTemplate="header">
                <img style="border-top-left-radius: 5px; border-top-right-radius: 5px" alt="Card" src="..\..\assets\layout\images\06 Banners_Mesa de trabajo 1 copia 9.png" />
             </ng-template>
-            <p style="text-align: justify">Descubre una plataforma que se integra sin problemas con tus herramientas de análisis preferidas. Desde Power BI y Tableau hasta Google Analytics y Facebook Insights, te ofrecemos la flexibilidad para conectar y aprovechar al máximo tus aplicaciones de confianza.</p>
          </p-card>
       </div>
    </div>
