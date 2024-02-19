@@ -18,7 +18,7 @@
                   "main": "src/main.ts",
                   "polyfills": "src/polyfills.ts",
                   "tsConfig": "src/tsconfig.app.json",
-                  "assets": ["src/favicon.ico", "src/assets", "src/assets/layout/images/Isotipo Degradado (2).png"],
+                  "assets": ["src/76b052f3-21e4-4f98-8b69-6c31a6d24b3f.ico", "src/assets"],
                   "styles": ["./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", "node_modules/font-awesome/css/font-awesome.css", "node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"],
                   "scripts": ["node_modules/jquery/dist/jquery.min.js", "node_modules/popper.js/dist/umd/popper.min.js", "node_modules/bootstrap/dist/js/bootstrap.min.js"]
                },
